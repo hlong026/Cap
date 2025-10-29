@@ -712,19 +712,21 @@ function createRecordingMutations(
 
 			const metadata = await commands.getVideoMetadata(media.path);
 			const plan = await commands.checkUpgradedAndUpdate();
+			// 时间限制已移除 - 允许分享任意时长的录制
 			const canShare = {
-				allowed: plan || metadata.duration < 300,
-				reason: !plan && metadata.duration >= 300 ? "upgrade_required" : null,
+				allowed: true, // 原逻辑: plan || metadata.duration < 300
+				reason: null,
 			};
 
-			if (!canShare.allowed) {
-				if (canShare.reason === "upgrade_required") {
-					await commands.showWindow("Upgrade");
-					throw new Error(
-						"Upgrade required to share recordings longer than 5 minutes",
-					);
-				}
-			}
+			// 时间检查已禁用
+			// if (!canShare.allowed) {
+			// 	if (canShare.reason === "upgrade_required") {
+			// 		await commands.showWindow("Upgrade");
+			// 		throw new Error(
+			// 			"Upgrade required to share recordings longer than 5 minutes",
+			// 		);
+			// 	}
+			// }
 
 			const unlisten = await events.uploadProgress.listen((event) => {
 				console.log("Upload progress event:", event.payload);

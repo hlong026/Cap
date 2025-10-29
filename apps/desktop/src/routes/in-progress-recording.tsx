@@ -33,7 +33,8 @@ declare global {
 	}
 }
 
-const MAX_RECORDING_FOR_FREE = 5 * 60 * 1000;
+// 时间限制已移除 - 可以无限时长录制
+const MAX_RECORDING_FOR_FREE = Number.MAX_SAFE_INTEGER; // 原值: 5 * 60 * 1000
 
 export default function () {
 	const [state, setState] = createSignal<State>(
